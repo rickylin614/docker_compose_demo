@@ -1,0 +1,102 @@
+version: '3'
+services: 
+    node1:
+        container_name: redis-node1
+        build: 
+            context: redis
+            args:
+            - REDIS_PORT=${NODE1_PORT}
+            - HOST_IP=${HOST}
+        volumes: 
+            - ./data/node1/data:/data
+        environment:
+            - TZ=${TIME_ZONE}
+        ports: 
+            - ${NODE1_PORT}:${NODE1_PORT}
+            - 1${NODE1_PORT}:1${NODE1_PORT}
+
+    node2:
+        container_name: redis-node2
+        build: 
+            context: redis
+            args:
+            - REDIS_PORT=${NODE2_PORT}
+            - HOST_IP=${HOST}
+        volumes: 
+            - ./data/node2/data:/data
+        environment:
+            - TZ=${TIME_ZONE}
+        ports: 
+            - ${NODE2_PORT}:${NODE2_PORT}
+            - 1${NODE2_PORT}:1${NODE2_PORT}
+
+    node3:
+        container_name: redis-node3
+        build: 
+            context: redis
+            args:
+            - REDIS_PORT=${NODE3_PORT}
+            - HOST_IP=${HOST}
+        volumes: 
+            - ./data/node3/data:/data
+        environment:
+            - TZ=${TIME_ZONE}
+        ports: 
+            - ${NODE3_PORT}:${NODE3_PORT}
+            - 1${NODE3_PORT}:1${NODE3_PORT}
+
+    node4:
+        container_name: redis-node4
+        build: 
+            context: redis
+            args:
+            - REDIS_PORT=${NODE4_PORT}
+            - HOST_IP=${HOST}
+        volumes: 
+            - ./data/node4/data:/data
+        environment:
+            - TZ=${TIME_ZONE}
+        ports: 
+            - ${NODE4_PORT}:${NODE4_PORT}
+            - 1${NODE4_PORT}:1${NODE4_PORT}
+    node5:
+        container_name: redis-node5
+        build: 
+            context: redis
+            args:
+            - REDIS_PORT=${NODE5_PORT}
+            - HOST_IP=${HOST}
+        volumes: 
+            - ./data/node5/data:/data
+        environment:
+            - TZ=${TIME_ZONE}
+        ports: 
+            - ${NODE5_PORT}:${NODE5_PORT}
+            - 1${NODE5_PORT}:1${NODE5_PORT}
+
+    node6:
+        container_name: redis-node6
+        build: 
+            context: redis
+            args:
+            - REDIS_PORT=${NODE6_PORT}
+            - HOST_IP=${HOST}
+        volumes: 
+            - ./data/node6/data:/data
+        environment:
+            - TZ=${TIME_ZONE}
+        ports: 
+            - ${NODE6_PORT}:${NODE6_PORT}
+            - 1${NODE6_PORT}:1${NODE6_PORT}
+            
+    cluster-creator:
+        image: redis:6.2.4
+        container_name: redis-cluster-creator
+        entrypoint: redis-cli --cluster create ${HOST}:${NODE1_PORT} ${HOST}:${NODE2_PORT} ${HOST}:${NODE3_PORT} ${HOST}:${NODE4_PORT} ${HOST}:${NODE5_PORT} ${HOST}:${NODE6_PORT} --cluster-replicas 1 --cluster-yes
+        depends_on: 
+        - node1
+        - node2
+        - node3
+        - node4
+        - node5
+        - node6

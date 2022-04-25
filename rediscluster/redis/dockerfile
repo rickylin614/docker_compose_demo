@@ -1,0 +1,12 @@
+FROM redis:6.2.4
+
+ARG REDIS_PORT
+ARG HOST_IP
+
+COPY redis.conf /etc/redis/redis.conf
+
+# 將 Port 改成傳進來的 Port 值
+RUN sed -i 's/REDIS_PORT/'$REDIS_PORT'/g' /etc/redis/redis.conf
+RUN sed -i 's/HOST_IP/'$HOST_IP'/g' /etc/redis/redis.conf
+
+ENTRYPOINT redis-server /etc/redis/redis.conf
